@@ -16,7 +16,3 @@ Format: `- YYYY-MM-DD | file or area | one line`
 - 2026-10-13 | app/features/results-explore | More tests for reduced-motion and nearest-circle tap resolution (critic on #3)
 - 2026-10-13 | app/features/results-explore/PlaceholderPhoto.tsx | List thumbnails still show a cropped "Placeh…" inside the image, redundant now the caption sits below
 - 2026-10-13 | design/tokens.json | confidence.unsure.outlineDotGap = 3 was invented (style.md says only "dotted"); confirm in design/style.md (resolved 2026-10-13: Timothy kept 3; now in style.md)
-
-## issue-14-confidence-designs, 2026-10-13
-
-- 2026-10-13 | app/features/results-explore | Maestro test fails: after tapping confidence-words variant, "Possible signs of mould" text is not visible despite being in accessibility tree; code looks correct but text doesn't render

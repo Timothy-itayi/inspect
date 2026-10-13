@@ -85,7 +85,7 @@ appId: host.exp.Exponent
 - tapOn:
     id: confidence-words
 - extendedWaitUntil:
-    visible: "Possible signs of mould"
+    visible: "Has there been mould in this room? What was done about the cause?"
     timeout: 10000
 - takeScreenshot: 07-confidence-words
 - scrollUntilVisible:
@@ -101,7 +101,7 @@ appId: host.exp.Exponent
 - tapOn:
     id: confidence-scale
 - extendedWaitUntil:
-    visible: "Possible signs of mould"
+    visible: "Has there been mould in this room? What was done about the cause?"
     timeout: 10000
 - takeScreenshot: 08-confidence-scale
 - scrollUntilVisible:

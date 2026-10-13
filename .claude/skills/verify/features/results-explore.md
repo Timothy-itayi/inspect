@@ -32,3 +32,6 @@ Preconditions:
 - `screens.sh` fails if any of the expected screenshots is missing.
 - Accessible rows hide child text from Maestro, so assertions match the row label (regex), not the inner text.
 - If node_modules reads fail with `dataless` files (full disk), delete `node_modules` and reinstall.
+
+## Writing waits in the flow
+Wait on text that is on screen when the view opens and is its own element (a card's question, or a testID). Don't wait on a card heading: it sits inside the row's accessible group, so Maestro only sees the combined label. Don't wait on anything below the first screenful without `scrollUntilVisible`.
