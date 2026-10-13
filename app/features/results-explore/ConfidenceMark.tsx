@@ -21,8 +21,8 @@ export function ConfidenceSwatch({ level }: { level: ConfidenceLevel }) {
         y={hairline / 2}
         width={SIZE - hairline}
         height={SIZE - hairline}
-        fill={c.pattern === 'solid' ? t.color.ink : 'none'}
-        stroke={t.color.ink}
+        fill={c.pattern === 'solid' ? t.color.text : 'none'}
+        stroke={t.color.text}
         strokeWidth={hairline}
         strokeLinecap={unsure ? 'round' : undefined}
         strokeDasharray={unsure ? `0 ${'outlineDotGap' in c ? c.outlineDotGap : 0}` : undefined}
@@ -34,7 +34,7 @@ export function ConfidenceSwatch({ level }: { level: ConfidenceLevel }) {
           y1={SIZE}
           x2={x + SIZE}
           y2={0}
-          stroke={t.color.ink}
+          stroke={t.color.text}
           strokeWidth={'line' in c ? c.line : 1}
         />
       ))}

@@ -2,16 +2,17 @@ import { useEffect, useMemo, useRef } from 'react';
 import { Animated } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { penPath } from './penPath';
-import { t, withAlpha } from './tokens';
+import { roleColor, t, withAlpha } from './tokens';
 import { useReduceMotion } from './useReduceMotion';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
 type Props = { width: number; height: number; seed: number };
 
-/** Ink pen ellipse with a 35% highlight inside. Draws once over drawMs; already drawn under Reduce Motion. */
+/** Teal pen ellipse with a thin white halo and a 15% teal fill. Draws once over drawMs; already drawn under Reduce Motion. */
 export function PenCircle({ width, height, seed }: Props) {
-  const pad = t.annotation.stroke;
+  const halo = t.annotation.stroke + t.annotation.haloExtra * 2;
+  const pad = halo;
   const { d, fillD, length } = useMemo(() => penPath(width - pad * 2, height - pad * 2, seed), [width, height, seed, pad]);
   const reduce = useReduceMotion();
   const progress = useRef(new Animated.Value(0)).current;
@@ -33,20 +34,26 @@ export function PenCircle({ width, height, seed }: Props) {
       <Path
         d={fillD}
         transform={`translate(${pad} ${pad})`}
-        fill={t.color.highlight}
+        fill={roleColor(t.annotation.fill)}
         fillOpacity={reduce === null ? 0 : t.annotation.fillOpacity}
       />
-      <AnimatedPath
-        d={d}
-        transform={`translate(${pad} ${pad})`}
-        fill="none"
-        stroke={reduce === null ? withAlpha(t.color.ink, 0) : t.color.ink}
-        strokeWidth={t.annotation.stroke}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeDasharray={`${length} ${length}`}
-        strokeDashoffset={offset}
-      />
+      {[
+        { color: roleColor(t.annotation.haloColor), width: halo },
+        { color: roleColor(t.annotation.color), width: t.annotation.stroke },
+      ].map((s) => (
+        <AnimatedPath
+          key={s.width}
+          d={d}
+          transform={`translate(${pad} ${pad})`}
+          fill="none"
+          stroke={reduce === null ? withAlpha(s.color, 0) : s.color}
+          strokeWidth={s.width}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeDasharray={`${length} ${length}`}
+          strokeDashoffset={offset}
+        />
+      ))}
     </Svg>
   );
 }

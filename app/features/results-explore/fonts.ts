@@ -1,13 +1,12 @@
-import { Alegreya_500Medium, Alegreya_700Bold } from '@expo-google-fonts/alegreya';
 import {
   AtkinsonHyperlegibleNext_400Regular,
   AtkinsonHyperlegibleNext_600SemiBold,
+  AtkinsonHyperlegibleNext_700Bold,
 } from '@expo-google-fonts/atkinson-hyperlegible-next';
 
-// Weights 500/700 (headings) and 400/600 (body), per design/style.md.
+// Weights 400 (body), 600 (labels) and 700 (headings), per design/style.md.
 export const AppFonts = {
-  Alegreya_500Medium,
-  Alegreya_700Bold,
   AtkinsonHyperlegibleNext_400Regular,
   AtkinsonHyperlegibleNext_600SemiBold,
+  AtkinsonHyperlegibleNext_700Bold,
 };

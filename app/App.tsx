@@ -12,7 +12,7 @@ export default function App() {
   if (!loaded && !error) {
     return (
       <View style={styles.loading}>
-        <ActivityIndicator color={t.color.ink} accessibilityLabel="Loading" />
+        <ActivityIndicator color={t.color.text} accessibilityLabel="Loading" />
       </View>
     );
   }
@@ -25,5 +25,5 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  loading: { flex: 1, backgroundColor: t.color.board, alignItems: 'center', justifyContent: 'center' },
+  loading: { flex: 1, backgroundColor: t.color.background, alignItems: 'center', justifyContent: 'center' },
 });
