@@ -5,7 +5,7 @@ Written via the case-study-log skill. Newest at the top.
 ## 2026-10-13: List wins the results-screen layout
 - Context: three coded prototypes of the results screen, built from one fixture, needed comparing before Build.
 - Options: List, On the photo, Checklist
-- Chosen: List, because Timothy picked it after seeing the verify screenshots (PR #8). No further reason recorded.
+- Chosen: List, because it is easier to scan (Timothy, after seeing the verify screenshots in PR #8). To revisit once real results exist in Build.
 - Decided by: Timothy
 - Links: #3, PR #8, kill-pile/2026-10-13-results-on-the-photo, kill-pile/2026-10-13-results-checklist
 
