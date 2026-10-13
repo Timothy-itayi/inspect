@@ -1,7 +1,7 @@
 photo_id,issue_type,present,x,y,w,h,notes
 example-001,mould-signs,y,0.10,0.05,0.30,0.20,"dark area in corner, clean elsewhere"
-example-001,damp-signs,n,,,
-example-001,crack-signs,n,,,
-example-001,water-entry-signs,n,,,
-example-001,blind-cord-loop,n,,,
-example-001,window-covering-damage,n,,,
+example-001,damp-signs,n,,,,,
+example-001,crack-signs,n,,,,,
+example-001,water-entry-signs,n,,,,,
+example-001,blind-cord-loop,n,,,,,
+example-001,window-covering-damage,n,,,,,

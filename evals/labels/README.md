@@ -19,6 +19,23 @@
 
 5. Use `notes` for anything else (e.g., "corner is cut off", "hard to see, only visible in shadow").
 
+## Rules the checker enforces
+
+- The first line is exactly `photo_id,issue_type,present,x,y,w,h,notes`.
+- Every row has 8 columns (so a blank `n` row looks like `photo-001,damp-signs,n,,,,,`).
+- Each photo has each of the six issue types exactly once.
+- `present` is `y` or `n`.
+- For `y`: `x`, `y`, `w`, `h` are numbers from 0 to 1, `w` and `h` are above 0, and the box stays inside the photo (`x + w` and `y + h` are 1 or less).
+- For `n`: `x`, `y`, `w`, `h` are blank.
+
+## Check your sheet
+
+From the `evals/` folder, run:
+
+    pnpm run validate labels/your-file.csv
+
+It prints each problem with its line number, or `OK` if the sheet is good. Fix every problem before using the labels.
+
 ## Format
 
 Use the template in `template.csv` as a reference. Notes can contain commas; just quote the whole note in the CSV.
