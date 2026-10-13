@@ -2,6 +2,13 @@
 
 Written via the case-study-log skill. Newest at the top.
 
+## 2026-10-13: Replace the clipboard look with a clean, Airbnb-inspired style
+- Context: the clipboard look (kraft board, paper sheets, serif headings, ballpoint ink) was not helping the product.
+- Options: keep the clipboard look; blend it with a cleaner style; a fresh style that keeps the pen circle; a fully fresh style with no pen circle
+- Chosen: a fresh style that keeps only the pen circle, with one deep teal accent (#0E6B6B). Timothy said the UI "was not helping our cause".
+- Decided by: Timothy
+- Links: #11, kill-pile/2026-10-13-clipboard-look
+
 ## 2026-10-13: List wins the results-screen layout
 - Context: three coded prototypes of the results screen, built from one fixture, needed comparing before Build.
 - Options: List, On the photo, Checklist

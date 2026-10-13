@@ -3,16 +3,22 @@ import raw from '../../../design/tokens.json';
 // Everything visual comes from design/tokens.json. The only values defined here are the
 // ones design/style.md states in prose but tokens.json doesn't carry yet.
 export const t = raw;
+/** Annotation colours are named roles in tokens.json; this resolves them to hex. */
+export const roleColor = (role: string) => raw.color[role as keyof typeof raw.color];
 export type ConfidenceLevel = keyof typeof raw.confidence;
 
-export const sheetBorder = {
-  width: raw.sheet.borderWidth,
-  color: raw.color[raw.sheet.borderColor as 'ink'],
-  opacity: raw.sheet.borderOpacity,
-};
 export const MIN_TOUCH = raw.touch.min;
-/** Thin strokes (swatch outline, checklist boxes, control borders) use the hatch line width or the pen stroke. */
+/** Thin strokes (swatch outline, checklist boxes, control borders) use the hatch line width. */
 export const hairline = raw.confidence.unsure.line;
+
+/** Soft card shadow from the shadow token (iOS shadow props plus Android elevation). */
+export const cardShadow = {
+  shadowColor: raw.shadow.color,
+  shadowOpacity: raw.shadow.opacity,
+  shadowOffset: { width: 0, height: raw.shadow.offsetY },
+  shadowRadius: raw.shadow.blur,
+  elevation: raw.shadow.elevation,
+};
 
 export function withAlpha(hex: string, alpha: number): string {
   const a = Math.round(alpha * 255).toString(16).padStart(2, '0');
@@ -20,26 +26,23 @@ export function withAlpha(hex: string, alpha: number): string {
 }
 
 // Loaded family names from @expo-google-fonts, keyed by the weights in tokens.json.
-const headingFamilies: Record<number, string> = {
-  [raw.fontWeight.headingRegular]: 'Alegreya_500Medium',
-  [raw.fontWeight.headingBold]: 'Alegreya_700Bold',
-};
-const bodyFamilies: Record<number, string> = {
-  [raw.fontWeight.body]: 'AtkinsonHyperlegibleNext_400Regular',
-  [raw.fontWeight.bodyStrong]: 'AtkinsonHyperlegibleNext_600SemiBold',
+const families: Record<number, string> = {
+  [raw.fontWeight.regular]: 'AtkinsonHyperlegibleNext_400Regular',
+  [raw.fontWeight.semibold]: 'AtkinsonHyperlegibleNext_600SemiBold',
+  [raw.fontWeight.bold]: 'AtkinsonHyperlegibleNext_700Bold',
 };
 
 export const text = {
-  heading: (size: keyof typeof raw.fontSize, bold = true) => ({
-    fontFamily: headingFamilies[bold ? raw.fontWeight.headingBold : raw.fontWeight.headingRegular],
+  heading: (size: keyof typeof raw.fontSize) => ({
+    fontFamily: families[raw.fontWeight.bold],
     fontSize: raw.fontSize[size],
     lineHeight: raw.fontSize[size] * raw.lineHeight.heading,
-    color: raw.color.ink,
+    color: raw.color.text,
   }),
   body: (size: keyof typeof raw.fontSize = 'body', strong = false) => ({
-    fontFamily: bodyFamilies[strong ? raw.fontWeight.bodyStrong : raw.fontWeight.body],
+    fontFamily: families[strong ? raw.fontWeight.semibold : raw.fontWeight.regular],
     fontSize: raw.fontSize[size],
     lineHeight: raw.fontSize[size] * raw.lineHeight.body,
-    color: raw.color.ink,
+    color: raw.color.text,
   }),
 };

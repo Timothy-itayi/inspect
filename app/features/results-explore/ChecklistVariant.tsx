@@ -2,14 +2,14 @@ import { StyleSheet, Text, View } from 'react-native';
 import { ConfidenceMark } from './ConfidenceMark';
 import { issues, V1_TYPES } from './fixture';
 import { positionPhrase } from './region';
-import { rule, ScreenTitle, Sheet } from './shared';
+import { rule, ScreenTitle, Card } from './shared';
 import { MIN_TOUCH, t, text } from './tokens';
 
 export function ChecklistVariant() {
   return (
     <>
       <ScreenTitle>Checklist</ScreenTitle>
-      <Sheet>
+      <Card>
         {V1_TYPES.map(({ issueType, name }, i) => {
           const issue = issues.find((x) => x.issueType === issueType);
           const label = issue
@@ -30,18 +30,18 @@ export function ChecklistVariant() {
                         <Text style={text.body('footnote', true)}>Worth asking</Text>
                       </View>
                       <ConfidenceMark level={issue.confidence} />
-                      <Text style={[text.body('footnote'), { color: t.color.inkMuted }]}>{issue.evidence}</Text>
-                      <Text style={[text.body('footnote'), { color: t.color.inkMuted }]}>{positionPhrase(issue.region)}</Text>
+                      <Text style={[text.body('footnote'), { color: t.color.textMuted }]}>{issue.evidence}</Text>
+                      <Text style={[text.body('footnote'), { color: t.color.textMuted }]}>{positionPhrase(issue.region)}</Text>
                     </>
                   ) : (
-                    <Text style={[text.body('footnote'), { color: t.color.inkMuted }]}>Nothing spotted in these photos</Text>
+                    <Text style={[text.body('footnote'), { color: t.color.textMuted }]}>Nothing spotted in these photos</Text>
                   )}
                 </View>
               </View>
             </View>
           );
         })}
-      </Sheet>
+      </Card>
     </>
   );
 }
@@ -53,12 +53,12 @@ const styles = StyleSheet.create({
     height: t.space[6],
     marginTop: t.space[1],
     borderWidth: t.annotation.stroke,
-    borderColor: t.color.ink,
-    borderRadius: t.radius.sheet,
+    borderColor: t.color.text,
+    borderRadius: t.radius.control,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  boxFlagged: { backgroundColor: t.color.highlight },
+  boxFlagged: { backgroundColor: t.color.accentTint },
   rowText: { flex: 1, gap: t.space[1] },
-  flag: { alignSelf: 'flex-start', backgroundColor: t.color.highlight, paddingHorizontal: t.space[2], borderRadius: t.radius.sheet },
+  flag: { alignSelf: 'flex-start', backgroundColor: t.color.accentTint, paddingHorizontal: t.space[2], borderRadius: t.radius.control },
 });
