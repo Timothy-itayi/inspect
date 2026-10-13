@@ -1,0 +1,75 @@
+# Results-screen prototypes (issue #3). Run via .claude/skills/verify/scripts/screens.sh,
+# which passes PORT (Metro); screenshots land in the test output dir.
+appId: host.exp.Exponent
+---
+- launchApp:
+    clearState: false
+- openLink: exp://127.0.0.1:${PORT}
+# Expo Go may show a first-run sheet; dismiss it if it appears.
+- tapOn:
+    text: "Continue"
+    optional: true
+- extendedWaitUntil:
+    visible: "Results screen, three ways"
+    timeout: 120000
+# Expo Go opens its developer menu on first launch; swipe it away if it's up.
+- runFlow:
+    when:
+      visible: "Reload"
+    commands:
+      - swipe:
+          start: 50%, 75%
+          end: 50%, 98%
+- extendedWaitUntil:
+    visible:
+      id: variant-list
+    timeout: 10000
+- takeScreenshot: 00-switcher
+
+- tapOn:
+    id: variant-list
+- assertVisible:
+    id: row-damp-signs
+- extendedWaitUntil:
+    visible: "Is there a damp problem here, and has the cause been fixed?"
+    timeout: 10000
+- takeScreenshot: 01-list
+- scrollUntilVisible:
+    element:
+      id: row-window-covering-damage
+- takeScreenshot: 02-list-lower
+- scrollUntilVisible:
+    element:
+      id: back
+    direction: UP
+- tapOn:
+    id: back
+
+- tapOn:
+    id: variant-overlay
+- extendedWaitUntil:
+    visible:
+      id: circle-damp-signs
+    timeout: 10000
+- extendedWaitUntil:
+    visible: "Tap a circle to see the possible issue and the question to ask."
+    timeout: 5000
+- takeScreenshot: 03-overlay
+- tapOn:
+    id: circle-damp-signs
+- assertVisible: "Is there a damp problem here, and has the cause been fixed?"
+- takeScreenshot: 04-overlay-detail
+- tapOn:
+    id: back
+
+- tapOn:
+    id: variant-checklist
+- assertVisible: "Worth asking.*"
+- assertVisible: ".*Nothing spotted in these photos.*"
+- assertNotVisible: "OK"
+- assertNotVisible: "Passed"
+- takeScreenshot: 05-checklist
+- scrollUntilVisible:
+    element:
+      id: check-window-covering-damage
+- takeScreenshot: 06-checklist-lower
