@@ -12,3 +12,5 @@ coverage/
 verify-output/
 *.log
 CLAUDE.local.md
+evals/photos/*
+!evals/photos/README.md
