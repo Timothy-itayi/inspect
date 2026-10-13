@@ -47,7 +47,7 @@ Line height: body 1.45, headings 1.2. Sentence case everywhere; no all-caps labe
 
 ## Confidence
 
-Every issue shows a word label plus a hatch swatch. Likely shows solid ink fill; Possible shows dense 45° hatch (2px lines, 4px gap); Unsure shows sparse 45° hatch (1px lines, 8px gap) plus dotted outline.
+Every issue shows a word label plus a hatch swatch. Likely shows solid ink fill; Possible shows dense 45° hatch (2px lines, 4px gap); Unsure shows sparse 45° hatch (1px lines, 8px gap) plus dotted outline (3px gap between dots).
 
 Words: "Likely", "Possible", "Unsure". Findings are phrased "possible issue, worth asking about"; never claim a legal breach.
 
