@@ -22,3 +22,21 @@ An AI companion for Melbourne rental inspections that shows what it isn't sure a
 ## Design
 
 Follow design/style.md and design/tokens.json; never hard-code colours or font sizes.
+
+## Auto-merge
+
+Some changes can merge by themselves once every check passes, the reviewers find nothing that must be fixed, and the evaluator signs off. Only changes where **every file** matches one of these patterns qualify:
+
+- `docs/**`: documentation, research notes and screenshots
+- `kitchen/**`: the decision log, AI log, kill pile and problems list
+- `**/*.test.ts`: tests on their own
+- `.maestro/**`: the screen tests
+
+Everything else waits for Timothy. That covers anything you'd see in the app, new or upgraded dependencies, the AI prompt and response format, and CI. Rule changes (this file, `.claude/`, `.github/`, dependency files) are never merged by the loop, even with Timothy's approval; he merges those himself on GitHub. `scripts/merge_gate.py` in the kitchen repo reads the list below from `main` and makes the call.
+
+```auto-merge
+docs/**
+kitchen/**
+**/*.test.ts
+.maestro/**
+```
