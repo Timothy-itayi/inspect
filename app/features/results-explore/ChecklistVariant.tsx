@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { ConfidenceMark } from './ConfidenceMark';
 import { issues, V1_TYPES } from './fixture';
+import { positionPhrase } from './region';
 import { rule, ScreenTitle, Sheet } from './shared';
 import { MIN_TOUCH, t, text } from './tokens';
 
@@ -12,7 +13,7 @@ export function ChecklistVariant() {
         {V1_TYPES.map(({ issueType, name }, i) => {
           const issue = issues.find((x) => x.issueType === issueType);
           const label = issue
-            ? `Worth asking: ${name}. Confidence: ${t.confidence[issue.confidence].label.toLowerCase()}. ${issue.evidence}`
+            ? `Worth asking: ${name}. Confidence: ${t.confidence[issue.confidence].label.toLowerCase()}. ${issue.evidence} ${positionPhrase(issue.region)}.`
             : `${name}. Nothing spotted in these photos.`;
           return (
             <View key={issueType} testID={`check-${issueType}`}>
@@ -30,6 +31,7 @@ export function ChecklistVariant() {
                       </View>
                       <ConfidenceMark level={issue.confidence} />
                       <Text style={[text.body('footnote'), { color: t.color.inkMuted }]}>{issue.evidence}</Text>
+                      <Text style={[text.body('footnote'), { color: t.color.inkMuted }]}>{positionPhrase(issue.region)}</Text>
                     </>
                   ) : (
                     <Text style={[text.body('footnote'), { color: t.color.inkMuted }]}>Nothing spotted in these photos</Text>
@@ -50,7 +52,7 @@ const styles = StyleSheet.create({
     width: t.space[6],
     height: t.space[6],
     marginTop: t.space[1],
-    borderWidth: 1.5,
+    borderWidth: t.annotation.stroke,
     borderColor: t.color.ink,
     borderRadius: t.radius.sheet,
     alignItems: 'center',

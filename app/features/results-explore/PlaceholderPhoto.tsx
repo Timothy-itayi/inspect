@@ -1,3 +1,4 @@
+import { View } from 'react-native';
 import Svg, { Circle, Ellipse, G, Line, Path, Rect, Text as SvgText } from 'react-native-svg';
 import { PHOTO_ASPECT } from './fixture';
 import { t, withAlpha } from './tokens';
@@ -9,7 +10,8 @@ import { t, withAlpha } from './tokens';
 export function PlaceholderPhoto({ width }: { width: number }) {
   const { color, fontWeight } = t;
   return (
-    <Svg width={width} height={width / PHOTO_ASPECT} viewBox="0 0 400 300" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+    <View accessible accessibilityRole="image" accessibilityLabel="Placeholder photo, drawn in code">
+    <Svg width={width} height={width / PHOTO_ASPECT} viewBox="0 0 400 300">
       <Rect width={400} height={300} fill={withAlpha(color.rule, 0.55)} />
       <Rect y={270} width={400} height={30} fill={withAlpha(color.board, 0.9)} />
       <Line x1={0} y1={270} x2={400} y2={270} stroke={color.inkMuted} strokeWidth={2} />
@@ -44,5 +46,6 @@ export function PlaceholderPhoto({ width }: { width: number }) {
         Placeholder photo, drawn in code
       </SvgText>
     </Svg>
+    </View>
   );
 }

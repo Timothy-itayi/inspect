@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import Svg, { Line, Rect } from 'react-native-svg';
 import type { ConfidenceLevel } from './tokens';
-import { t, text } from './tokens';
+import { hairline, t, text } from './tokens';
 
 const SIZE = t.space[6];
 
@@ -15,16 +15,17 @@ export function ConfidenceSwatch({ level }: { level: ConfidenceLevel }) {
   }
   const unsure = level === 'unsure';
   return (
-    <Svg width={SIZE} height={SIZE}>
+    <Svg width={SIZE} height={SIZE} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
       <Rect
-        x={0.5}
-        y={0.5}
-        width={SIZE - 1}
-        height={SIZE - 1}
+        x={hairline / 2}
+        y={hairline / 2}
+        width={SIZE - hairline}
+        height={SIZE - hairline}
         fill={c.pattern === 'solid' ? t.color.ink : 'none'}
         stroke={t.color.ink}
-        strokeWidth={1}
-        strokeDasharray={unsure ? '2 2' : undefined}
+        strokeWidth={hairline}
+        strokeLinecap={unsure ? 'round' : undefined}
+        strokeDasharray={unsure ? `0 ${'outlineDotGap' in c ? c.outlineDotGap : 0}` : undefined}
       />
       {lines.map((x) => (
         <Line
@@ -43,13 +44,14 @@ export function ConfidenceSwatch({ level }: { level: ConfidenceLevel }) {
 
 export function ConfidenceMark({ level }: { level: ConfidenceLevel }) {
   return (
-    <View style={styles.row} importantForAccessibility="no-hide-descendants">
+    <View style={styles.row}>
       <ConfidenceSwatch level={level} />
-      <Text style={text.body('footnote', true)}>{t.confidence[level].label}</Text>
+      <Text style={[text.body('footnote', true), styles.word]}>{t.confidence[level].label}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'center', gap: t.space[2] },
+  row: { flexDirection: 'row', alignItems: 'center', gap: t.space[2], flexWrap: 'wrap' },
+  word: { flexShrink: 1 },
 });

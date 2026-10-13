@@ -18,10 +18,14 @@ function Thumb({ issue, index }: { issue: Issue; index: number }) {
   const full = THUMB_W / crop;
   const fullH = full / PHOTO_ASPECT;
   return (
-    <View style={styles.thumb}>
-      <View style={{ position: 'absolute', left: -left * full, top: -top * fullH }}>
-        <PhotoCanvas width={full} issues={[issue]} idPrefix={`thumb${index}`} />
+    <View style={{ width: THUMB_W, gap: t.space[1] }}>
+      <View style={styles.thumb}>
+        <View style={{ position: 'absolute', left: -left * full, top: -top * fullH }}>
+          <PhotoCanvas width={full} issues={[issue]} idPrefix={`thumb${index}`} />
+        </View>
       </View>
+      {/* The crop hides the in-photo notice, so the badge sits outside it. */}
+      <Text style={[text.body('caption'), { color: t.color.inkMuted }]}>{t.placeholder.badge}</Text>
     </View>
   );
 }
@@ -51,7 +55,7 @@ export function ListVariant() {
 }
 
 const styles = StyleSheet.create({
-  head: { flexDirection: 'row', gap: t.space[3], alignItems: 'center' },
+  head: { flexDirection: 'row', gap: t.space[3], alignItems: 'flex-start' },
   headText: { flex: 1, gap: t.space[2] },
   thumb: { width: THUMB_W, height: THUMB_H, borderRadius: t.radius.photo, overflow: 'hidden' },
   evidence: { color: t.color.inkMuted, marginTop: t.space[3] },

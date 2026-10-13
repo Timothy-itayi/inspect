@@ -5,10 +5,14 @@ import raw from '../../../design/tokens.json';
 export const t = raw;
 export type ConfidenceLevel = keyof typeof raw.confidence;
 
-// shortcut: style.md says "1px ink at 12% border" and tokens.json has no entry for it. Move into tokens.json when the design system next changes.
-export const sheetBorder = { width: 1, opacity: 0.12 };
-// Apple HIG minimum touch target in points; the issue's acceptance criteria require it.
-export const MIN_TOUCH = 44;
+export const sheetBorder = {
+  width: raw.sheet.borderWidth,
+  color: raw.color[raw.sheet.borderColor as 'ink'],
+  opacity: raw.sheet.borderOpacity,
+};
+export const MIN_TOUCH = raw.touch.min;
+/** Thin strokes (swatch outline, checklist boxes, control borders) use the hatch line width or the pen stroke. */
+export const hairline = raw.confidence.unsure.line;
 
 export function withAlpha(hex: string, alpha: number): string {
   const a = Math.round(alpha * 255).toString(16).padStart(2, '0');

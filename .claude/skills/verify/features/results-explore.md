@@ -5,7 +5,7 @@ The app opens on a switcher with three ways to see one fixture's four possible i
 ## Sub-features
 
 - `variant-list`: rows with a cropped, circled thumbnail, confidence word and hatch, evidence and the suggested question.
-- `variant-overlay`: the photo with a pen circle per region (`circle-<issueType>`); tapping one fills `issue-detail` with name, confidence, position, evidence and question.
+- `variant-overlay`: the photo with a pen circle per region (`circle-<issueType>`, a VoiceOver element each); a tap anywhere on the photo picks the circle with the nearest centre and fills `issue-detail` with name, confidence, position, evidence and question.
 - `variant-checklist`: the six v1 types (`check-<issueType>`); flagged ones say "Worth asking", the rest say "Nothing spotted in these photos", never "OK" or "Passed".
 - Accessibility: each issue has a label like "Possible signs of damp. Confidence: possible. Lower left of photo." and touch targets are at least 44pt.
 
@@ -28,5 +28,6 @@ Preconditions:
 - `expo start --ios` crashes here ("Simulator app did not open fast enough"), so the script starts plain Metro and installs Expo Go with `simctl`.
 - Expo Go opens its developer menu on first launch; the flow swipes it away when "Reload" is visible. Its floating gear button shows in screenshots.
 - Maestro `takeScreenshot` paths must be relative; files land under `maestro/<run>/results-explore/takeScreenshot/` and the script copies them up.
+- `screens.sh` fails if any of the seven screenshots is missing.
 - Accessible rows hide child text from Maestro, so assertions match the row label (regex), not the inner text.
 - If node_modules reads fail with `dataless` files (full disk), delete `node_modules` and reinstall.

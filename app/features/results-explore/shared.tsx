@@ -10,7 +10,7 @@ export function Sheet({ children, flush }: { children: ReactNode; flush?: boolea
 export function BackButton({ onPress }: { onPress: () => void }) {
   return (
     <Pressable testID="back" accessibilityRole="button" accessibilityLabel="Back to variants" onPress={onPress} style={styles.back}>
-      <Text style={text.body('body', true)}>Back</Text>
+      <Text style={[text.body('body', true), { flexShrink: 1 }]}>Back</Text>
     </Pressable>
   );
 }
@@ -26,8 +26,8 @@ const styles = StyleSheet.create({
     backgroundColor: t.color.paper,
     borderRadius: t.radius.sheet,
     borderWidth: sheetBorder.width,
-    borderColor: withAlpha(t.color.ink, sheetBorder.opacity),
+    borderColor: withAlpha(sheetBorder.color, sheetBorder.opacity),
     overflow: 'hidden',
   },
-  back: { minHeight: MIN_TOUCH, minWidth: MIN_TOUCH, justifyContent: 'center', alignSelf: 'flex-start' },
+  back: { minHeight: MIN_TOUCH, minWidth: MIN_TOUCH, justifyContent: 'center', alignSelf: 'flex-start', paddingVertical: t.space[1] },
 });

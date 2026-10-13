@@ -1,5 +1,6 @@
 import type { Region } from './fixture';
 
+// Boundaries are inclusive of the middle band: a centre at exactly 1/3 or 2/3 is middle/centre.
 const bands = <T extends string>(v: number, low: T, mid: T, high: T): T =>
   v < 1 / 3 ? low : v > 2 / 3 ? high : mid;
 

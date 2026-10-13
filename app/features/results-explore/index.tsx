@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     minHeight: MIN_TOUCH,
     justifyContent: 'center',
     paddingHorizontal: t.space[4],
-    borderWidth: 1.5,
+    borderWidth: t.annotation.stroke,
     borderColor: t.color.ink,
     borderRadius: t.radius.control,
   },
