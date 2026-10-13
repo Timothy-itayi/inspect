@@ -21,7 +21,10 @@ const TOP_INSET = t.space[12] + t.space[3];
 export function ResultsExplore() {
   const [variant, setVariant] = useState<Variant | null>(null);
   return (
-    <ScrollView style={styles.board} contentContainerStyle={styles.content}>
+    <View style={styles.board}>
+      {/* Opaque strip so scrolled content never draws under the status bar. */}
+      <View style={styles.statusStrip} />
+      <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
       {variant === null ? (
         <>
           <ScreenTitle>Results screen, three ways</ScreenTitle>
@@ -50,13 +53,16 @@ export function ResultsExplore() {
           {variant === 'checklist' && <ChecklistVariant />}
         </>
       )}
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   board: { flex: 1, backgroundColor: t.color.background },
-  content: { paddingTop: TOP_INSET, paddingHorizontal: GUTTER, paddingBottom: t.space[10] },
+  statusStrip: { height: TOP_INSET, backgroundColor: t.color.background },
+  scroll: { flex: 1 },
+  content: { paddingTop: t.space[2], paddingHorizontal: GUTTER, paddingBottom: t.space[10] },
   choice: {
     minHeight: MIN_TOUCH,
     justifyContent: 'center',
