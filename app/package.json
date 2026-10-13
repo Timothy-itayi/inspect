@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "index.ts",
   "dependencies": {
-    "@expo-google-fonts/alegreya": "^0.4.2",
     "@expo-google-fonts/atkinson-hyperlegible-next": "^0.4.1",
     "expo": "~57.0.28",
     "expo-font": "~57.0.4",

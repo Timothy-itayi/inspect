@@ -183,9 +183,6 @@ importers:
 
   app:
     dependencies:
-      '@expo-google-fonts/alegreya':
-        specifier: ^0.4.2
-        version: 0.4.2
       '@expo-google-fonts/atkinson-hyperlegible-next':
         specifier: ^0.4.1
         version: 0.4.1
@@ -781,9 +778,6 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
-
-  '@expo-google-fonts/alegreya@0.4.2':
-    resolution: {integrity: sha512-fE6ckTCI9YMEdTu1TUvbV3RKDZZ14A+rhEik0dn7gXhfoYaaQnFO/ogSgFGl/aIC0PK4OIbqvmM1cfE7ejNw9g==}
 
   '@expo-google-fonts/atkinson-hyperlegible-next@0.4.1':
     resolution: {integrity: sha512-tA5NUQCrb4GnQ8kvghyF6Kqw72zr4zSNmMwhCTcHlsu/jE5JoF8Fje5/WwL44y17Lue99pG9cyq3PW5X/7ZDng==}
@@ -3678,8 +3672,6 @@ snapshots:
 
   '@esbuild/win32-x64@0.28.2':
     optional: true
-
-  '@expo-google-fonts/alegreya@0.4.2': {}
 
   '@expo-google-fonts/atkinson-hyperlegible-next@0.4.1': {}
 
