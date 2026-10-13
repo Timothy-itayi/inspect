@@ -7,7 +7,7 @@ import { Card, ScreenTitle } from './shared';
 import { t, text } from './tokens';
 
 /** Wide crop of the photo centred on the region, with room round it so the pen circle sits fully inside. */
-function Thumb({ issue, index, width }: { issue: Issue; index: number; width: number }) {
+function Thumb({ issue, width }: { issue: Issue; width: number }) {
   const { x, y, w, h } = issue.region;
   const aspectRatio = t.photo.cardAspect;
   const cw = Math.min(1, Math.max(w * 1.5, h * 2, 0.4)); // fraction of photo width shown
@@ -20,7 +20,7 @@ function Thumb({ issue, index, width }: { issue: Issue; index: number; width: nu
     <View>
       <View style={{ width, aspectRatio, borderRadius: t.radius.photo, overflow: 'hidden' }}>
         <View style={{ position: 'absolute', left: -left * full, top: -top * fullH }}>
-          <PhotoCanvas width={full} issues={[issue]} idPrefix={`thumb${index}`} />
+          <PhotoCanvas width={full} issues={[issue]} label={false} />
         </View>
       </View>
       {/* The crop hides the in-photo notice, so the badge sits outside it. */}
@@ -36,12 +36,12 @@ export function ListVariant({ gutter, confidenceDisplay = 'both' }: { gutter: nu
     <>
       <ScreenTitle>List</ScreenTitle>
       <View style={styles.list}>
-        {issues.map((issue, i) => (
+        {issues.map((issue) => (
           <View key={issue.issueType} testID={`row-${issue.issueType}`}>
             <Card flush>
               <View style={styles.inner}>
                 <View accessible accessibilityLabel={issueLabel(issue)} style={styles.head}>
-                  <Thumb issue={issue} index={i} width={photoWidth} />
+                  <Thumb issue={issue} width={photoWidth} />
                   <View style={styles.headText}>
                     <Text style={text.heading('title2')}>{issueName(issue.issueType)}</Text>
                     <ConfidenceMark level={issue.confidence} display={confidenceDisplay} />

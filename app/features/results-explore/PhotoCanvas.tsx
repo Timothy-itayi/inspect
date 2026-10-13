@@ -3,21 +3,23 @@ import { issueLabel } from './accessibility';
 import { PHOTO_ASPECT, type Issue } from './fixture';
 import { PenCircle } from './PenCircle';
 import { PlaceholderPhoto } from './PlaceholderPhoto';
+import { nearestIssue } from './region';
 import { MIN_TOUCH, t } from './tokens';
 
 // The pen circle sits a little outside the region so it rings the evidence rather than cutting it.
 const CIRCLE_GROW = 1.2;
 
-type Props = {
+type Base = {
   width: number;
   issues: Issue[];
-  /** When set, the photo is interactive: a tap picks the circle whose centre is nearest. */
-  onPressIssue?: (issue: Issue) => void;
   selected?: Issue['issueType'];
-  idPrefix: string;
+  /** Draw the "Placeholder photo" text inside the image. */
+  label?: boolean;
 };
+/** Interactive: a tap picks the circle whose centre is nearest, and each circle needs a test ID prefix. Otherwise neither is set. */
+type Props = Base & ({ onPressIssue: (issue: Issue) => void; idPrefix: string } | { onPressIssue?: undefined; idPrefix?: undefined });
 
-export function PhotoCanvas({ width, issues, onPressIssue, selected, idPrefix }: Props) {
+export function PhotoCanvas({ width, issues, onPressIssue, selected, idPrefix, label }: Props) {
   const height = width / PHOTO_ASPECT;
   const centres = issues.map((i) => ({
     issue: i,
@@ -29,16 +31,13 @@ export function PhotoCanvas({ width, issues, onPressIssue, selected, idPrefix }:
   const onTap = (e: GestureResponderEvent) => {
     if (!onPressIssue) return;
     const { locationX: x, locationY: y } = e.nativeEvent;
-    let best = centres[0];
-    for (const c of centres) {
-      if (Math.hypot(c.cx - x, c.cy - y) < Math.hypot(best.cx - x, best.cy - y)) best = c;
-    }
-    onPressIssue(best.issue);
+    const best = nearestIssue(x / width, y / height, issues, PHOTO_ASPECT);
+    if (best) onPressIssue(best);
   };
 
   return (
     <View style={{ width, height }}>
-      <PlaceholderPhoto width={width} />
+      <PlaceholderPhoto width={width} label={label} />
       {issues.map((issue, i) => {
         const { w, h } = issue.region;
         const cw = Math.max(w * width * CIRCLE_GROW, t.annotation.stroke * 4);

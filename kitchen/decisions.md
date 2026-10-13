@@ -2,6 +2,13 @@
 
 Written via the case-study-log skill. Newest at the top.
 
+## 2026-10-14: Keep the expo-font setting the reviewer suggested removing
+- Context: the outside reviewer on #3 said the `expo-font` setting in `app/app.json` was unneeded, since fonts load with `useFonts` in Expo Go.
+- Options: remove it now; keep it
+- Chosen: keep it, because once Inspect is a real install (not Expo Go) this setting is how the fonts get built into the app. Removing it now would mean adding it back in Build.
+- Decided by: head chef, in the #19 spec; Timothy has the final say when he merges PR #21
+- Links: #19, PR #21, #3
+
 ## 2026-10-13: Replace the clipboard look with a clean, Airbnb-inspired style
 - Context: the clipboard look (kraft board, paper sheets, serif headings, ballpoint ink) was not helping the product.
 - Options: keep the clipboard look; blend it with a cleaner style; a fresh style that keeps the pen circle; a fully fresh style with no pen circle
