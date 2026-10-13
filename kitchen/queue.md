@@ -17,3 +17,7 @@ Format: `- YYYY-MM-DD | file or area | one line`
 - 2026-10-13 | app/features/results-explore/PlaceholderPhoto.tsx | List thumbnails still show a cropped "Placeh…" inside the image, redundant now the caption sits below
 - 2026-10-13 | design/tokens.json | confidence.unsure.outlineDotGap = 3 was invented (style.md says only "dotted"); confirm in design/style.md (resolved 2026-10-13: Timothy kept 3; now in style.md)
 
+## issue-14-confidence-designs, 2026-10-13
+
+- 2026-10-13 | .maestro/results-explore.yaml | Flow fails at confidence-words and confidence-scale steps: does not scroll to show damp question after tapping variant, unlike standard list flow; need to add scroll or assert row-damp-signs first
+
