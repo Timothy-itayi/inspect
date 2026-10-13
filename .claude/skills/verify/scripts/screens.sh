@@ -2,10 +2,21 @@
 # Screen flows for Inspect: boots the iPhone 15 Pro simulator, starts Metro, installs Expo Go, runs the Maestro flows in .maestro/, and saves screenshots.
 # Run from anywhere: .claude/skills/verify/scripts/screens.sh
 # Tears down only what it started: Metro, and the simulator only if this script booted it.
-# Takes turns on the simulator: holds a lock directory while running, so builders can run it at the same time and it waits its turn.
-# Env: VERIFY_SIM_UDID picks a specific simulator. VERIFY_SIM_LOCK moves the lock (default ~/.inspect-sim-lock).
-# VERIFY_SIM_WAIT is how many seconds to wait for the lock (default 1800). Exit 0 pass, 1 flow failed, 2 doctor refused or lock wait timed out.
+# Takes turns on the simulator: re-runs itself under macOS lockf on ~/.inspect-simulator.lock, so builders can run it at the same time and it waits its turn.
+# The kernel frees the lock when the run ends or crashes (even kill -9); the lock file is never deleted.
+# Env: VERIFY_SIM_UDID picks a specific simulator. VERIFY_SIM_WAIT is whole seconds to wait for the lock (default 1800).
+# Exit 0 pass, 1 flow failed, 2 doctor refused, bad VERIFY_SIM_WAIT, or lock wait timed out.
 set -uo pipefail
+
+LOCK_FILE="$HOME/.inspect-simulator.lock"
+if [ -z "${INSPECT_HOLDS_SIM_LOCK:-}" ]; then
+  WAIT="${VERIFY_SIM_WAIT:-1800}"
+  case "$WAIT" in ''|*[!0-9]*) echo "VERIFY_SIM_WAIT must be a whole number of seconds, got '$WAIT'"; exit 2;; esac
+  /usr/bin/lockf -k -s -t 0 "$LOCK_FILE" true || echo "Waiting for the simulator: another screen check is running."
+  INSPECT_HOLDS_SIM_LOCK=1 /usr/bin/lockf -k -t "$WAIT" "$LOCK_FILE" "$0" "$@"; rc=$?
+  [ $rc -eq 75 ] && { echo "Gave up waiting for the simulator after ${WAIT}s."; exit 2; }
+  exit $rc
+fi
 
 ROOT="$(cd "$(dirname "$0")/../../../.." && pwd)"
 OUT="${ROOT}/verify-output/$(date +%Y%m%d-%H%M%S)-screens"
@@ -17,11 +28,8 @@ export PATH="/opt/homebrew/opt/openjdk/bin:$PATH:$HOME/.maestro/bin"
 EXPO_PID=""
 BOOTED_BY_US=""
 UDID="${VERIFY_SIM_UDID:-}"
-LOCK="${VERIFY_SIM_LOCK:-$HOME/.inspect-sim-lock}"
 
 cleanup() {
-  # Free the simulator lock, but only if this run holds it.
-  if [ "$(cat "$LOCK/pid" 2>/dev/null)" = "$$" ]; then rm -rf "$LOCK"; fi
   # Kill only the Metro process group this script started; never by name.
   if [ -n "$EXPO_PID" ] && kill -0 "$EXPO_PID" 2>/dev/null; then
     pkill -P "$EXPO_PID" 2>/dev/null
@@ -30,25 +38,6 @@ cleanup() {
   if [ -n "$BOOTED_BY_US" ] && [ -n "$UDID" ]; then xcrun simctl shutdown "$UDID" 2>/dev/null; fi
 }
 trap cleanup EXIT
-
-# Take our turn on the simulator. shortcut: two waiters clearing the same stale lock can race; fine for a few builders, upgrade to flock-style if it bites.
-waited=0; told=""
-until mkdir "$LOCK" 2>/dev/null; do
-  holder="$(cat "$LOCK/pid" 2>/dev/null)"
-  if [ -n "$holder" ]; then
-    kill -0 "$holder" 2>/dev/null || { rm -rf "$LOCK"; continue; }
-  else
-    age=$(( $(date +%s) - $(stat -f %m "$LOCK" 2>/dev/null || stat -c %Y "$LOCK" 2>/dev/null || date +%s) ))
-    [ "$age" -gt 30 ] && { rm -rf "$LOCK"; continue; }
-  fi
-  if [ "$waited" -ge "${VERIFY_SIM_WAIT:-1800}" ]; then
-    echo "Gave up waiting for the simulator after ${waited}s: another screen check is still running (pid ${holder:-unknown}). Try again later." | tee "$OUT/doctor.log"
-    exit 2
-  fi
-  [ -n "$told" ] || { echo "Waiting for the simulator: another screen check is running (pid ${holder:-unknown})"; told=1; }
-  sleep 10; waited=$((waited + 10))
-done
-echo "$$" >"$LOCK/pid"
 
 declare -a RESULTS
 FAIL=0
