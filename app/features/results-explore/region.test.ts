@@ -39,8 +39,20 @@ describe('nearestIssue', () => {
   });
 
   it('picks the nearer centre where circles overlap', () => {
-    expect(nearestIssue(0.33, 0.5, [left, right])).toBe(right);
-    expect(nearestIssue(0.27, 0.5, [left, right])).toBe(left);
+    // Drawn circles reach 0.6 x the region size from the centre (PhotoCanvas CIRCLE_GROW 1.2), so 0.24 here.
+    // Centres (0.2, 0.5) and (0.4, 0.5) are 0.2 apart: the circles overlap.
+    const a = at('damp-signs', 0, 0.3, 0.4, 0.4);
+    const b = at('mould-signs', 0.2, 0.3, 0.4, 0.4);
+    // Tap (0.33, 0.5) is 0.13 from a's centre and 0.07 from b's: inside both circles, nearer b.
+    expect(nearestIssue(0.33, 0.5, [a, b])).toBe(b);
+    expect(nearestIssue(0.27, 0.5, [a, b])).toBe(a);
+  });
+
+  it('uses straight-line distance, not across-plus-down', () => {
+    // Tap (0.25, 0.25). far-across is 0.5 away in a line (Manhattan 0.5); diagonal is 0.495 straight (Manhattan 0.7).
+    const acrossOnly = at('damp-signs', 0.65, 0.15);
+    const diagonal = at('mould-signs', 0.5, 0.5);
+    expect(nearestIssue(0.25, 0.25, [acrossOnly, diagonal])).toBe(diagonal);
   });
 
   it('picks the first in the list on an exact tie, whatever the order', () => {
@@ -61,7 +73,8 @@ describe('nearestIssue', () => {
   });
 
   it('measures distance in pixels on a wide photo', () => {
-    // Tap (0.5, 0.5): up/down is 0.4 away from `high`, sideways 0.35 from `side`. At 4:3 vertical units are shorter on screen.
+    // Distance is measured on the photo as drawn on screen (4:3), so a vertical gap counts for less than the same number in 0-1 units.
+    // Tap (0.5, 0.5): `high` is 0.4 away vertically, `side` is 0.35 away sideways.
     const side = at('mould-signs', 0.75, 0.4);
     const high = at('damp-signs', 0.4, 0);
     expect(nearestIssue(0.5, 0.5, [side, high])).toBe(side);
