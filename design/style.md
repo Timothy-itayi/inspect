@@ -2,19 +2,20 @@
 
 ## Concept
 
-An inspector's clipboard. The screen is the kraft board; content sits on paper sheets clipped to it. Field notes, written in a hurry, careful about evidence.
+Clean and calm. White space instead of lines, the photo leads every card, headings are bold and near-black. One accent colour, deep teal, appears only on the main action and on the pen circle drawn round each possible issue. The only hand-made touch is that pen circle; everything around it stays quiet.
 
 ## Colour roles
 
 | Role | Hex | Use |
 |---|---|---|
-| board | #C9B58C | Screen background and chrome; only full ink text on it, never muted ink |
-| paper | #F3EFE2 | Sheets: lists, results, questions |
-| ink | #1E2B45 | Ballpoint blue-black; all primary text, icons, pen annotations |
-| inkMuted | #55607A | Secondary text, on paper only |
-| rule | #B9C3D6 | Faint ruled lines and dividers on paper; decorative, never carries meaning |
-| highlight | #F5E64A | Highlighter fill behind ink text or over a flagged photo region; never a text colour |
-| danger | #9E2A1F | Errors and destructive actions only, always with a word |
+| background | #FFFFFF | Screen background and cards |
+| surface | #F7F7F7 | Muted areas, photo placeholders, secondary panels |
+| text | #222222 | All primary text, icons, headings, confidence swatches, outlined button borders |
+| textMuted | #6A6A6A | Secondary text |
+| divider | #DDDDDD | Thin dividers; decoration only, never carries meaning |
+| accent | #0E6B6B | Filled main button, pen circle, small highlights; nothing else |
+| accentTint | #E6F2F1 | Light tint behind small accent highlights, with text colour on it |
+| danger | #B42318 | Errors and destructive actions only, always with a word |
 
 ## Contrast
 
@@ -22,17 +23,20 @@ All text pairings meet WCAG AA (4.5:1).
 
 | Pair | Ratio | Level |
 |---|---|---|
-| ink / paper | 12.28 | AA |
-| inkMuted / paper | 5.47 | AA |
-| ink / highlight | 10.96 | AA |
-| ink / board | 7.04 | AA |
-| danger / paper | 6.51 | AA |
+| text / background | 15.91 | AAA |
+| textMuted / background | 5.41 | AA |
+| text / surface | 14.85 | AAA |
+| textMuted / surface | 5.05 | AA |
+| background (white) / accent | 6.30 | AA |
+| accent / background | 6.30 | AA |
+| text / accentTint | 13.89 | AAA |
+| danger / background | 6.57 | AA |
 
-inkMuted/board fails at 3.13: never use it. highlight/paper is 1.12, so highlight is never the only signal; a flagged region always also gets an ink pen circle.
+divider / background is 1.36: it is decoration only and never the only signal. The pen circle (accent, with a white halo) is a graphic, so it needs 3:1: accent / background is 6.30.
 
 ## Type
 
-Headings: Alegreya (humanist calligraphic serif, OFL, @expo-google-fonts/alegreya), weights 500 and 700. Body and UI: Atkinson Hyperlegible Next (OFL, chosen for legibility in dim, crowded hallways), weights 400 and 600.
+One family for everything: Atkinson Hyperlegible Next (OFL, chosen for legibility in dim, crowded hallways). Weights 400 (body), 600 (buttons, labels) and 700 (headings). Headings are bold and larger, in the same family.
 
 Scale in px, iOS base 17, approximately 1.25 ratio:
 
@@ -47,21 +51,25 @@ Line height: body 1.45, headings 1.2. Sentence case everywhere; no all-caps labe
 
 ## Confidence
 
-Every issue shows a word label plus a hatch swatch. Likely shows solid ink fill; Possible shows dense 45° hatch (2px lines, 4px gap); Unsure shows sparse 45° hatch (1px lines, 8px gap) plus dotted outline (3px gap between dots).
+Every issue shows a word label plus a hatch swatch, drawn in text colour, never colour alone. Likely shows solid fill; Possible shows dense 45° hatch (2px lines, 4px gap); Unsure shows sparse 45° hatch (1px lines, 8px gap) plus dotted outline (3px gap between dots).
 
 Words: "Likely", "Possible", "Unsure". Findings are phrased "possible issue, worth asking about"; never claim a legal breach.
 
 ## Signature element
 
-Circled annotations on photos: a hand-drawn-looking ink ellipse (2.5px stroke, slightly irregular, not closed perfectly) around the evidence region, with the highlight at 35% opacity inside. This is the one bold element; everything around it stays quiet.
+Circled annotations on photos: a hand-drawn-looking teal ellipse (3px stroke, slightly irregular, not closed perfectly) around the evidence region, with a thin white halo underneath so it shows on dark mould and pale walls alike, and the accent at 15% opacity inside.
 
 ## Shape
 
-Paper sheets radius 2 (paper corners), photos radius 4, buttons and inputs radius 10. Sheet edge gets a 1px ink at 12% border, no drop shadows except the clip at the top of the active sheet.
+Cards radius 16 with a soft shadow instead of a border. Photos radius 12. Buttons and inputs radius 8. Chips are fully rounded (pill). Thin dividers only where white space is not enough.
+
+## Layout
+
+The photo leads each card. A sticky bottom bar holds the main action: a filled teal button with white text. Secondary buttons are outlined in text colour. Tap targets are at least 44pt.
 
 ## Spacing
 
-4px grid; screen gutter 16; sheet padding 20.
+4px grid; screen gutter 16; card padding 20.
 
 ## Motion
 
@@ -69,8 +77,8 @@ One moment only: the pen circle draws itself (stroke animation, 400ms) when an i
 
 ## Voice
 
-Plain, active, sentence case. Buttons say exactly what happens ("Take photo", "Ask about this", "Not an issue"). Offline: "Saved. Will analyse when you're back online." Errors explain what happened and what to do; no apologies.
+Plain, active, sentence case. Buttons say exactly what happens ("Take photo", "Ask about this", "Not an issue"). Offline: "Saved. Will analyse when you're back online." Errors explain what happened and what to do; no apologies. Never claim a property breaches the law; say "possible issue, worth asking about".
 
 ## Don't
 
-REA or Domain colours or logos; colour alone for confidence; terracotta or clay accents; extra accent colours.
+Airbnb or REA/Domain colours, logos or fonts; colour alone for confidence; extra accent colours; teal on anything but main actions, the pen circle and small highlights.
