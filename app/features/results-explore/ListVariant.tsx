@@ -1,6 +1,6 @@
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { issueLabel } from './accessibility';
-import { ConfidenceMark } from './ConfidenceMark';
+import { ConfidenceMark, type ConfidenceDisplay } from './ConfidenceMark';
 import { issueName, issues, PHOTO_ASPECT, type Issue } from './fixture';
 import { PhotoCanvas } from './PhotoCanvas';
 import { Card, ScreenTitle } from './shared';
@@ -29,7 +29,7 @@ function Thumb({ issue, index, width }: { issue: Issue; index: number; width: nu
   );
 }
 
-export function ListVariant({ gutter }: { gutter: number }) {
+export function ListVariant({ gutter, confidenceDisplay = 'both' }: { gutter: number; confidenceDisplay?: ConfidenceDisplay }) {
   const { width } = useWindowDimensions();
   const photoWidth = width - gutter * 2 - t.space[3] * 2;
   return (
@@ -44,7 +44,7 @@ export function ListVariant({ gutter }: { gutter: number }) {
                   <Thumb issue={issue} index={i} width={photoWidth} />
                   <View style={styles.headText}>
                     <Text style={text.heading('title2')}>{issueName(issue.issueType)}</Text>
-                    <ConfidenceMark level={issue.confidence} />
+                    <ConfidenceMark level={issue.confidence} display={confidenceDisplay} />
                   </View>
                 </View>
                 <Text style={[text.body('footnote'), styles.evidence]}>{issue.evidence}</Text>

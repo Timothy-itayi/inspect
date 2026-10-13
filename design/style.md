@@ -53,6 +53,8 @@ Line height: body 1.45, headings 1.2. Sentence case everywhere; no all-caps labe
 
 Every issue shows a word label plus a hatch swatch, drawn in text colour, never colour alone. Likely shows solid fill; Possible shows dense 45° hatch (2px lines, 4px gap); Unsure shows sparse 45° hatch (1px lines, 8px gap) plus dotted outline (3px gap between dots).
 
+Exploration for #6 (not the style yet): the two halves shown apart. Words only is the word in a pill tag (accentTint background, text colour, bold). Scale only is three equal steps in a row (swatch size, space 1 gap): likely fills 3, possible 2, unsure 1, filled steps use that level's hatch, empty steps are an outline only in textMuted (5.4:1, so "out of 3" stays visible; divider is too faint). No new tokens.
+
 Words: "Likely", "Possible", "Unsure". Findings are phrased "possible issue, worth asking about"; never claim a legal breach.
 
 ## Signature element

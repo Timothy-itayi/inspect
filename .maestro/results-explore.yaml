@@ -72,3 +72,41 @@ appId: host.exp.Exponent
     element:
       id: check-window-covering-damage
 - takeScreenshot: 06-checklist-lower
+- scrollUntilVisible:
+    element:
+      id: back
+    direction: UP
+- tapOn:
+    id: back
+
+- scrollUntilVisible:
+    element:
+      id: confidence-words
+- tapOn:
+    id: confidence-words
+- extendedWaitUntil:
+    visible: "Has there been mould in this room? What was done about the cause?"
+    timeout: 10000
+- takeScreenshot: 07-confidence-words
+- scrollUntilVisible:
+    element:
+      id: back
+    direction: UP
+- tapOn:
+    id: back
+
+- scrollUntilVisible:
+    element:
+      id: confidence-scale
+- tapOn:
+    id: confidence-scale
+- extendedWaitUntil:
+    visible: "Has there been mould in this room? What was done about the cause?"
+    timeout: 10000
+- takeScreenshot: 08-confidence-scale
+- scrollUntilVisible:
+    element:
+      id: back
+    direction: UP
+- tapOn:
+    id: back

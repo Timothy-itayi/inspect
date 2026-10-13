@@ -82,7 +82,7 @@ fi
 if maestro --device "$UDID" test -e PORT="$PORT" --test-output-dir "$OUT/maestro" \
      "$ROOT/.maestro/results-explore.yaml" >"$OUT/maestro.log" 2>&1; then r=pass; else r=fail; fi
 cp "$OUT"/maestro/*/results-explore/takeScreenshot/*.png "$OUT/" 2>/dev/null
-for n in 00-switcher 01-list 02-list-lower 03-overlay 04-overlay-detail 05-checklist 06-checklist-lower; do
+for n in 00-switcher 01-list 02-list-lower 03-overlay 04-overlay-detail 05-checklist 06-checklist-lower 07-confidence-words 08-confidence-scale; do
   [ -s "$OUT/$n.png" ] || { r=fail; echo "missing screenshot $n.png" >>"$OUT/maestro.log"; }
 done
 record results-explore "$r" "$OUT/maestro.log, screenshots $OUT/*.png"
