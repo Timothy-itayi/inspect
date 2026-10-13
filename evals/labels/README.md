@@ -15,7 +15,6 @@
 
 4. If `present` is `n`:
    - Leave `x`, `y`, `w`, `h` blank.
-   - Leave `notes` blank.
 
 5. Use `notes` for anything else (e.g., "corner is cut off", "hard to see, only visible in shadow").
 
@@ -23,10 +22,14 @@
 
 - The first line is exactly `photo_id,issue_type,present,x,y,w,h,notes`.
 - Every row has 8 columns (so a blank `n` row looks like `photo-001,damp-signs,n,,,,,`).
+- `photo_id` is the photo's file name without the extension (`kitchen-03` for `kitchen-03.jpg`): letters, numbers and dashes, no spaces.
+- The sheet has at least one label row under the header (an empty sheet is an error).
 - Each photo has each of the six issue types exactly once.
 - `present` is `y` or `n`.
 - For `y`: `x`, `y`, `w`, `h` are numbers from 0 to 1, `w` and `h` are above 0, and the box stays inside the photo (`x + w` and `y + h` are 1 or less).
-- For `n`: `x`, `y`, `w`, `h` are blank.
+- For `n`: `x`, `y`, `w`, `h` are blank. `notes` can still be used.
+- Numbers are plain decimals like `0`, `0.25` or `.5`. No `1e-1`, no spaces.
+- A quote mark may only wrap a whole note (`"like, this"`), never sit in the middle of a word.
 
 ## Check your sheet
 
