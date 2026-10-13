@@ -14,10 +14,13 @@ type Props = {
   /** When set, the photo is interactive: a tap picks the circle whose centre is nearest. */
   onPressIssue?: (issue: Issue) => void;
   selected?: Issue['issueType'];
-  idPrefix: string;
+  /** Test ID prefix; only used when the photo is interactive. */
+  idPrefix?: string;
+  /** Draw the "Placeholder photo" text inside the image. */
+  label?: boolean;
 };
 
-export function PhotoCanvas({ width, issues, onPressIssue, selected, idPrefix }: Props) {
+export function PhotoCanvas({ width, issues, onPressIssue, selected, idPrefix, label }: Props) {
   const height = width / PHOTO_ASPECT;
   const centres = issues.map((i) => ({
     issue: i,
@@ -38,7 +41,7 @@ export function PhotoCanvas({ width, issues, onPressIssue, selected, idPrefix }:
 
   return (
     <View style={{ width, height }}>
-      <PlaceholderPhoto width={width} />
+      <PlaceholderPhoto width={width} label={label} />
       {issues.map((issue, i) => {
         const { w, h } = issue.region;
         const cw = Math.max(w * width * CIRCLE_GROW, t.annotation.stroke * 4);

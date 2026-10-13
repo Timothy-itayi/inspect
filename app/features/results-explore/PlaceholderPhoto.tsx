@@ -7,7 +7,7 @@ import { t, withAlpha } from './tokens';
  * Placeholder photo drawn in code, not a real or stock photo. Coordinates are a 400x300 drawing
  * that lines up with the regions in fixture.ts.
  */
-export function PlaceholderPhoto({ width }: { width: number }) {
+export function PlaceholderPhoto({ width, label = true }: { width: number; label?: boolean }) {
   const { color, fontWeight } = t;
   return (
     <View accessible accessibilityRole="image" accessibilityLabel="Placeholder photo, drawn in code">
@@ -34,6 +34,7 @@ export function PlaceholderPhoto({ width }: { width: number }) {
       <Line x1={208} y1={138} x2={352} y2={138} stroke={color.textMuted} strokeWidth={2} />
       {/* damp tide mark */}
       <Ellipse cx={76} cy={225} rx={36} ry={32} fill={color.textMuted} fillOpacity={0.3} />
+      {label && (
       <SvgText
         x={392}
         y={290}
@@ -45,6 +46,7 @@ export function PlaceholderPhoto({ width }: { width: number }) {
       >
         Placeholder photo, drawn in code
       </SvgText>
+      )}
     </Svg>
     </View>
   );
