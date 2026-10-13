@@ -15,6 +15,11 @@ describe("validateLabels", () => {
 		const csv = readFileSync(new URL("./labels/template.csv", import.meta.url), "utf8");
 		assert.deepEqual(validateLabels(csv, types), []);
 	});
+	it("accepts a file starting with a BOM", () => {
+		const types = JSON.parse(readFileSync(new URL("./labels/issue-types.json", import.meta.url), "utf8"));
+		const csv = readFileSync(new URL("./labels/template.csv", import.meta.url), "utf8");
+		assert.deepEqual(validateLabels("\uFEFF" + csv, types), []);
+	});
 	it("accepts CRLF and quoted notes with commas and quotes", () => {
 		check(['p,a,y,0.1,0.1,0.5,0.5,"dark, ""bad"" corner"', "p,b,n,,,,,", ""], [], "\r\n");
 	});

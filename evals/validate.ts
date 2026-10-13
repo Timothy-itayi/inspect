@@ -38,7 +38,7 @@ function parseCsv(text: string): { rows: Row[]; errors: string[] } {
 const isNum = (s: string) => s.trim() !== "" && Number.isFinite(Number(s));
 
 export function validateLabels(csvText: string, issueTypes: readonly string[]): string[] {
-	const { rows, errors } = parseCsv(csvText);
+	const { rows, errors } = parseCsv(csvText.replace(/^\uFEFF/, "")); // spreadsheets add a BOM
 	if (errors.length) return errors;
 	const [header, ...body] = rows;
 	if (!header || header.fields.join(",") !== HEADER) {
