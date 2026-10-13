@@ -14,6 +14,7 @@ if [ -z "${INSPECT_HOLDS_SIM_LOCK:-}" ]; then
   case "$WAIT" in ''|*[!0-9]*) echo "VERIFY_SIM_WAIT must be a whole number of seconds, got '$WAIT'"; exit 2;; esac
   /usr/bin/lockf -k -s -t 0 "$LOCK_FILE" true || echo "Waiting for the simulator: another screen check is running."
   INSPECT_HOLDS_SIM_LOCK=1 /usr/bin/lockf -k -t "$WAIT" "$LOCK_FILE" "$0" "$@"; rc=$?
+  # 75 is lockf giving up after the wait (EX_TEMPFAIL).
   [ $rc -eq 75 ] && { echo "Gave up waiting for the simulator after ${WAIT}s."; exit 2; }
   exit $rc
 fi

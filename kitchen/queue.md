@@ -14,6 +14,7 @@ Format: `- YYYY-MM-DD | file or area | one line`
 - 2026-10-13 | app/features/results-explore | More tests for reduced-motion and nearest-circle tap resolution (critic on #3)
 
 - 2026-10-14 | app (tooling) | No code formatter in the repo: files drift in layout (porter on #19). Add Prettier with a format check, or decide not to
+- 2026-10-14 | .claude/skills/verify/scripts/screens.sh | A screen check that is force-killed (kill -9) leaves its Metro server running, because the clean-up never gets to run. The simulator lock is still freed. Kill stray `expo start` processes by hand if it happens
 
 ## Resolved
 
