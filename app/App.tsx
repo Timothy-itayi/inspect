@@ -1,20 +1,16 @@
+import { AppFonts } from './features/results-explore/fonts';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useFonts } from 'expo-font';
+import { ResultsExplore } from './features/results-explore';
 
+// Variant switcher until real navigation exists (issue #3).
 export default function App() {
+  const [loaded] = useFonts(AppFonts);
+  if (!loaded) return null;
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <ResultsExplore />
+      <StatusBar style="dark" />
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

@@ -1,6 +1,6 @@
 ---
 name: verify
-description: Verify Inspect (Expo iOS app in app/, Cloudflare Worker in api/, eval runner in evals/). Use after any change and before the critic, to prove the scaffold still boots and, as screens land, that the user flows in features/ work. Today it proves the iOS bundle builds and the Worker answers HTTP; screen flows are todo until the app has screens.
+description: Verify Inspect (Expo iOS app in app/, Cloudflare Worker in api/, eval runner in evals/). Use after any change and before the critic, to prove the scaffold still boots and, as screens land, that the user flows in features/ work. Today it proves the iOS bundle builds and the Worker answers HTTP; the results-explore screen flow is live via `scripts/screens.sh`.
 ---
 
 # Verify Inspect
@@ -41,7 +41,15 @@ Live today (scaffold):
 - `ios-bundle`: `cd app && CI=1 pnpm exec expo export --platform ios --output-dir <dir>`; passes when a `.hbc` bundle exists
 - `api-http`: `curl -fsS http://127.0.0.1:$PORT/` against the running Worker
 
-When screens exist, drive the app in the iOS Simulator with Maestro (installed; needs Java on PATH from `~/.zshrc`). Select by `testID` and accessibility labels, never by coordinates. Put flows in `.maestro/<feature>.yaml` and add them to `boot-check.sh` (or a sibling script) as the features in `features/` go live. Prefer `iPhone 15 Pro` (`xcrun simctl list devices available`).
+Live screen flow (`results-explore`):
+
+```bash
+.claude/skills/verify/scripts/screens.sh
+```
+
+It boots `iPhone 15 Pro` (shutting it down afterwards only if it booted it), starts Metro on a free port, installs Expo Go from Expo's cache, runs `.maestro/results-explore.yaml`, and saves screenshots to `verify-output/<ts>-screens/`. Look at them: the script proves the flow ran, not that the hatch, circles and words look right.
+
+For further screens, drive the app in the iOS Simulator with Maestro (installed; needs Java on PATH from `~/.zshrc`). Select by `testID` and accessibility labels, never by coordinates. Put flows in `.maestro/<feature>.yaml` and add them to `boot-check.sh` (or a sibling script) as the features in `features/` go live. Prefer `iPhone 15 Pro` (`xcrun simctl list devices available`).
 
 ## Evidence
 
