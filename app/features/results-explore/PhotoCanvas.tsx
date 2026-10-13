@@ -3,6 +3,7 @@ import { issueLabel } from './accessibility';
 import { PHOTO_ASPECT, type Issue } from './fixture';
 import { PenCircle } from './PenCircle';
 import { PlaceholderPhoto } from './PlaceholderPhoto';
+import { nearestIssue } from './region';
 import { MIN_TOUCH, t } from './tokens';
 
 // The pen circle sits a little outside the region so it rings the evidence rather than cutting it.
@@ -30,11 +31,8 @@ export function PhotoCanvas({ width, issues, onPressIssue, selected, idPrefix, l
   const onTap = (e: GestureResponderEvent) => {
     if (!onPressIssue) return;
     const { locationX: x, locationY: y } = e.nativeEvent;
-    let best = centres[0];
-    for (const c of centres) {
-      if (Math.hypot(c.cx - x, c.cy - y) < Math.hypot(best.cx - x, best.cy - y)) best = c;
-    }
-    onPressIssue(best.issue);
+    const best = nearestIssue(x / width, y / height, issues, PHOTO_ASPECT);
+    if (best) onPressIssue(best);
   };
 
   return (
