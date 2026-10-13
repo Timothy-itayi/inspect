@@ -23,7 +23,7 @@ export function ConfidenceSwatch({ level, empty }: { level: ConfidenceLevel; emp
         width={SIZE - hairline}
         height={SIZE - hairline}
         fill={!empty && c.pattern === 'solid' ? t.color.text : 'none'}
-        stroke={empty ? t.color.divider : t.color.text}
+        stroke={empty ? t.color.textMuted : t.color.text}
         strokeWidth={hairline}
         strokeLinecap={unsure && !empty ? 'round' : undefined}
         strokeDasharray={unsure && !empty ? `0 ${'outlineDotGap' in c ? c.outlineDotGap : 0}` : undefined}
@@ -56,7 +56,7 @@ function WordsTag({ level }: { level: ConfidenceLevel }) {
 function ScaleBar({ level }: { level: ConfidenceLevel }) {
   const filled = confidenceSteps(level);
   return (
-    <View style={styles.row} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+    <View style={styles.bar} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
       {[1, 2, 3].map((n) => (
         <ConfidenceSwatch key={n} level={level} empty={n > filled} />
       ))}
@@ -79,6 +79,7 @@ export function ConfidenceMark({ level, display = 'both' }: { level: ConfidenceL
 
 const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: t.space[2], flexWrap: 'wrap' },
+  bar: { flexDirection: 'row', gap: t.space[1] },
   word: { flexShrink: 1 },
   tag: {
     alignSelf: 'flex-start',
