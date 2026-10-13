@@ -6,17 +6,19 @@ import { PhotoCanvas } from './PhotoCanvas';
 import { Card, ScreenTitle } from './shared';
 import { t, text } from './tokens';
 
-/** Crops the photo around the region (about twice its width) so the circled evidence is legible. */
+/** Wide crop of the photo centred on the region, with room round it so the pen circle sits fully inside. */
 function Thumb({ issue, index, width }: { issue: Issue; index: number; width: number }) {
   const { x, y, w, h } = issue.region;
-  const crop = Math.min(1, Math.max(w * 2, h * 2, 0.4)); // fraction of photo width shown; height shown is the same fraction
-  const left = Math.min(1 - crop, Math.max(0, x + w / 2 - crop / 2));
-  const top = Math.min(1 - crop, Math.max(0, y + h / 2 - crop / 2));
-  const full = width / crop;
+  const aspectRatio = t.photo.cardAspect;
+  const cw = Math.min(1, Math.max(w * 1.5, h * 2, 0.4)); // fraction of photo width shown
+  const ch = cw * (PHOTO_ASPECT / aspectRatio); // fraction of photo height shown
+  const left = Math.min(1 - cw, Math.max(0, x + w / 2 - cw / 2));
+  const top = Math.min(1 - ch, Math.max(0, y + h / 2 - ch / 2));
+  const full = width / cw;
   const fullH = full / PHOTO_ASPECT;
   return (
     <View>
-      <View style={{ width, height: width / PHOTO_ASPECT, borderRadius: t.radius.photo, overflow: 'hidden' }}>
+      <View style={{ width, aspectRatio, borderRadius: t.radius.photo, overflow: 'hidden' }}>
         <View style={{ position: 'absolute', left: -left * full, top: -top * fullH }}>
           <PhotoCanvas width={full} issues={[issue]} idPrefix={`thumb${index}`} />
         </View>

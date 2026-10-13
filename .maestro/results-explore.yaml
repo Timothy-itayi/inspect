@@ -30,9 +30,8 @@ appId: host.exp.Exponent
     id: variant-list
 - assertVisible:
     id: row-damp-signs
-- extendedWaitUntil:
-    visible: "Is there a damp problem here, and has the cause been fixed?"
-    timeout: 10000
+- scrollUntilVisible:
+    element: "Is there a damp problem here, and has the cause been fixed?"
 - takeScreenshot: 01-list
 - scrollUntilVisible:
     element:
