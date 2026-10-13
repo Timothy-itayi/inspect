@@ -1,1 +1,14 @@
-{ "name": "evals", "private": true, "type": "module" }
+{
+	"name": "evals",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"test": "node --test",
+		"typecheck": "tsc --noEmit",
+		"validate": "node validate.ts"
+	},
+	"devDependencies": {
+		"@types/node": "^20.0.0",
+		"typescript": "^5.5.2"
+	}
+}
