@@ -6,12 +6,17 @@ import { OverlayVariant } from './OverlayVariant';
 import { BackButton, ScreenTitle } from './shared';
 import { hairline, MIN_TOUCH, t, text } from './tokens';
 
-type Variant = 'list' | 'overlay' | 'checklist';
+type Variant = 'list' | 'overlay' | 'checklist' | 'confidence-words' | 'confidence-scale';
 
 const choices: { id: Variant; label: string }[] = [
   { id: 'list', label: 'List' },
   { id: 'overlay', label: 'On the photo' },
   { id: 'checklist', label: 'Checklist' },
+];
+
+const confidenceChoices: { id: Variant; label: string }[] = [
+  { id: 'confidence-words', label: 'Words' },
+  { id: 'confidence-scale', label: 'Scale' },
 ];
 
 const GUTTER = t.space[4];
@@ -31,24 +36,29 @@ export function ResultsExplore() {
           <Text style={[text.body(), { marginBottom: t.space[4] }]}>
             The same photo and four possible issues, shown three ways. Pick one to compare.
           </Text>
-          <View style={{ gap: t.space[3] }}>
-            {choices.map((c) => (
-              <Pressable
-                key={c.id}
-                testID={`variant-${c.id}`}
-                accessibilityRole="button"
-                onPress={() => setVariant(c.id)}
-                style={styles.choice}
-              >
-                <Text style={text.body('body', true)}>{c.label}</Text>
-              </Pressable>
-            ))}
-          </View>
+          {[{ heading: null, items: choices }, { heading: 'Confidence, two ways', items: confidenceChoices }].map((g) => (
+            <View key={g.items[0].id} style={styles.group}>
+              {g.heading && <Text style={text.heading('title3')}>{g.heading}</Text>}
+              {g.items.map((c) => (
+                <Pressable
+                  key={c.id}
+                  testID={c.id.startsWith('confidence') ? c.id : `variant-${c.id}`}
+                  accessibilityRole="button"
+                  onPress={() => setVariant(c.id)}
+                  style={styles.choice}
+                >
+                  <Text style={text.body('body', true)}>{c.label}</Text>
+                </Pressable>
+              ))}
+            </View>
+          ))}
         </>
       ) : (
         <>
           <BackButton onPress={() => setVariant(null)} />
           {variant === 'list' && <ListVariant gutter={GUTTER} />}
+          {variant === 'confidence-words' && <ListVariant gutter={GUTTER} confidenceDisplay="words" />}
+          {variant === 'confidence-scale' && <ListVariant gutter={GUTTER} confidenceDisplay="scale" />}
           {variant === 'overlay' && <OverlayVariant gutter={GUTTER} />}
           {variant === 'checklist' && <ChecklistVariant />}
         </>
@@ -63,6 +73,7 @@ const styles = StyleSheet.create({
   statusStrip: { height: TOP_INSET, backgroundColor: t.color.background },
   scroll: { flex: 1 },
   content: { paddingTop: t.space[2], paddingHorizontal: GUTTER, paddingBottom: t.space[10] },
+  group: { gap: t.space[3], marginBottom: t.space[6] },
   choice: {
     minHeight: MIN_TOUCH,
     justifyContent: 'center',
