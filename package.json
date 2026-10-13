@@ -1,0 +1,11 @@
+{
+  "name": "inspect",
+  "private": true,
+  "packageManager": "pnpm@12.4.2",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "typecheck": "pnpm -r --if-present run typecheck",
+    "test": "pnpm -r --if-present run test",
+    "verify": ".claude/skills/verify/scripts/boot-check.sh"
+  }
+}
