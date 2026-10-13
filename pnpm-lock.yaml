@@ -164,6 +164,8 @@ settings:
 
 importers:
 
+  .: {}
+
   api:
     devDependencies:
       '@cloudflare/vitest-plugin':
