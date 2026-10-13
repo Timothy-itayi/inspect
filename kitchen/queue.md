@@ -13,6 +13,8 @@ Format: `- YYYY-MM-DD | file or area | one line`
 
 - 2026-10-13 | app/features/results-explore | More tests for reduced-motion and nearest-circle tap resolution (critic on #3)
 
+- 2026-10-14 | app (tooling) | No code formatter in the repo: files drift in layout (porter on #19). Add Prettier with a format check, or decide not to
+
 ## Resolved
 
 - 2026-10-13 | design/tokens.json | confidence.unsure.outlineDotGap = 3 was invented (style.md says only "dotted"); confirm in design/style.md (resolved 2026-10-13: Timothy kept 3; now in style.md)
