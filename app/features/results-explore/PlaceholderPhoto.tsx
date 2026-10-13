@@ -35,17 +35,17 @@ export function PlaceholderPhoto({ width, label = true }: { width: number; label
       {/* damp tide mark */}
       <Ellipse cx={76} cy={225} rx={36} ry={32} fill={color.textMuted} fillOpacity={0.3} />
       {label && (
-      <SvgText
-        x={392}
-        y={290}
-        textAnchor="end"
-        fontSize={t.fontSize.footnote}
-        fill={color.text}
-        fontFamily="AtkinsonHyperlegibleNext_600SemiBold"
-        fontWeight={String(fontWeight.semibold)}
-      >
-        Placeholder photo, drawn in code
-      </SvgText>
+        <SvgText
+          x={392}
+          y={290}
+          textAnchor="end"
+          fontSize={t.fontSize.footnote}
+          fill={color.text}
+          fontFamily="AtkinsonHyperlegibleNext_600SemiBold"
+          fontWeight={String(fontWeight.semibold)}
+        >
+          Placeholder photo, drawn in code
+        </SvgText>
       )}
     </Svg>
     </View>

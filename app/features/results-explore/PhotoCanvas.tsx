@@ -8,17 +8,15 @@ import { MIN_TOUCH, t } from './tokens';
 // The pen circle sits a little outside the region so it rings the evidence rather than cutting it.
 const CIRCLE_GROW = 1.2;
 
-type Props = {
+type Base = {
   width: number;
   issues: Issue[];
-  /** When set, the photo is interactive: a tap picks the circle whose centre is nearest. */
-  onPressIssue?: (issue: Issue) => void;
   selected?: Issue['issueType'];
-  /** Test ID prefix; only used when the photo is interactive. */
-  idPrefix?: string;
   /** Draw the "Placeholder photo" text inside the image. */
   label?: boolean;
 };
+/** Interactive: a tap picks the circle whose centre is nearest, and each circle needs a test ID prefix. Otherwise neither is set. */
+type Props = Base & ({ onPressIssue: (issue: Issue) => void; idPrefix: string } | { onPressIssue?: undefined; idPrefix?: undefined });
 
 export function PhotoCanvas({ width, issues, onPressIssue, selected, idPrefix, label }: Props) {
   const height = width / PHOTO_ASPECT;
