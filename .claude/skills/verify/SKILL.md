@@ -47,7 +47,7 @@ Live screen flow (`results-explore`):
 .claude/skills/verify/scripts/screens.sh
 ```
 
-It boots `iPhone 15 Pro` (shutting it down afterwards only if it booted it), starts Metro on a free port, installs Expo Go from Expo's cache, runs `.maestro/results-explore.yaml`, and saves screenshots to `verify-output/<ts>-screens/`. Look at them: the script proves the flow ran, not that the hatch, circles and words look right.
+It boots `iPhone 15 Pro` (shutting it down afterwards only if it booted it), starts Metro on a free port, installs Expo Go from Expo's cache, runs `.maestro/results-explore.yaml`, and saves screenshots to `verify-output/<ts>-screens/`. The screen check waits its turn for the simulator (macOS `lockf`, released automatically when the check ends or crashes), so builders can run it at the same time. Look at them: the script proves the flow ran, not that the hatch, circles and words look right.
 
 For further screens, drive the app in the iOS Simulator with Maestro (installed; needs Java on PATH from `~/.zshrc`). Select by `testID` and accessibility labels, never by coordinates. Put flows in `.maestro/<feature>.yaml` and add them to `boot-check.sh` (or a sibling script) as the features in `features/` go live. Prefer `iPhone 15 Pro` (`xcrun simctl list devices available`).
 

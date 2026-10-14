@@ -2,8 +2,22 @@
 # Screen flows for Inspect: boots the iPhone 15 Pro simulator, starts Metro, installs Expo Go, runs the Maestro flows in .maestro/, and saves screenshots.
 # Run from anywhere: .claude/skills/verify/scripts/screens.sh
 # Tears down only what it started: Metro, and the simulator only if this script booted it.
-# Env: VERIFY_SIM_UDID picks a specific simulator. Exit 0 pass, 1 flow failed, 2 doctor refused.
+# Takes turns on the simulator: re-runs itself under macOS lockf on ~/.inspect-simulator.lock, so builders can run it at the same time and it waits its turn.
+# The kernel frees the lock when the run ends or crashes (even kill -9); the lock file is never deleted.
+# Env: VERIFY_SIM_UDID picks a specific simulator. VERIFY_SIM_WAIT is whole seconds to wait for the lock (default 1800).
+# Exit 0 pass, 1 flow failed, 2 doctor refused, bad VERIFY_SIM_WAIT, or lock wait timed out.
 set -uo pipefail
+
+LOCK_FILE="$HOME/.inspect-simulator.lock"
+if [ -z "${INSPECT_HOLDS_SIM_LOCK:-}" ]; then
+  WAIT="${VERIFY_SIM_WAIT:-1800}"
+  case "$WAIT" in ''|*[!0-9]*) echo "VERIFY_SIM_WAIT must be a whole number of seconds, got '$WAIT'"; exit 2;; esac
+  /usr/bin/lockf -k -s -t 0 "$LOCK_FILE" true || echo "Waiting for the simulator: another screen check is running."
+  INSPECT_HOLDS_SIM_LOCK=1 /usr/bin/lockf -k -t "$WAIT" "$LOCK_FILE" "$0" "$@"; rc=$?
+  # 75 is lockf giving up after the wait (EX_TEMPFAIL).
+  [ $rc -eq 75 ] && { echo "Gave up waiting for the simulator after ${WAIT}s."; exit 2; }
+  exit $rc
+fi
 
 ROOT="$(cd "$(dirname "$0")/../../../.." && pwd)"
 OUT="${ROOT}/verify-output/$(date +%Y%m%d-%H%M%S)-screens"
