@@ -26,3 +26,7 @@ Format: `- YYYY-MM-DD | file or area | one line`
   Kept on purpose (PR #21): the expo-font plugin is how fonts get built into the app once it is a real install, not just Expo Go.
 - 2026-10-13 | app/features/results-explore/PlaceholderPhoto.tsx | List thumbnails still show a cropped "Placeh…" inside the image, redundant now the caption sits below
   Fixed in PR #21: the List photos hide the in-image text; the caption stays, On the photo keeps its label.
+- 2026-10-16 | api/src/schema.ts | evidence and suggestedQuestion may contain line breaks though the spec calls each "one short line"; reject them if multi-line answers show up (critic on #24)
+- 2026-10-16 | api/src/schema.ts | before handing the format to Claude, check which JSON-schema rules its structured output honours (minimum, maximum, exclusiveMinimum, minLength, maxLength, maxItems, pattern); checkAnswer stays the real check either way (porter on #24)
+- 2026-10-16 | app/features/results-explore/tokens.ts | confidenceTokens is exported only as a type guard and nothing reads it; use it in ConfidenceMark or make it a type-only check (porter and critic on #24)
+- 2026-10-16 | .claude/skills/verify/scripts/screens.sh | Expo's developer-tools button covers the switcher title and card corners in screenshots; hide it during the run (porter on #24)

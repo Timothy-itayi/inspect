@@ -2,6 +2,13 @@
 
 Written via the case-study-log skill. Newest at the top.
 
+## 2026-10-16: Cap an AI answer at 20 issues and 300 characters per line of text
+- Context: the AI's answer comes from outside the app, and the reviewer on #24 pointed out nothing limited its size. The brief gives no numbers.
+- Options: no limits; limits in the app's check only; the same limits in both the format given to the AI and the app's check
+- Chosen: the same limits in both places (20 issues per photo, 300 characters for the evidence line and the question), because a photo from one room won't hold 20 real findings and one short line fits well under 300 characters
+- Decided by: head chef; Timothy confirms or changes it when approving the PR
+- Links: #24
+
 ## 2026-10-14: Keep the expo-font setting the reviewer suggested removing
 - Context: the outside reviewer on #3 said the `expo-font` setting in `app/app.json` was unneeded, since fonts load with `useFonts` in Expo Go.
 - Options: remove it now; keep it
