@@ -1,11 +1,14 @@
 import raw from '../../../design/tokens.json';
+import type { ConfidenceLevel } from '../../../api/src/schema';
 
 // Everything visual comes from design/tokens.json. The only values defined here are the
 // ones design/style.md states in prose but tokens.json doesn't carry yet.
 export const t = raw;
 /** Annotation colours are named roles in tokens.json; this resolves them to hex. */
 export const roleColor = (role: string) => raw.color[role as keyof typeof raw.color];
-export type ConfidenceLevel = keyof typeof raw.confidence;
+export type { ConfidenceLevel };
+// A level the schema names but tokens.json lacks is a type error here.
+export const confidenceTokens: Record<ConfidenceLevel, (typeof raw.confidence)[keyof typeof raw.confidence]> = raw.confidence;
 
 export const MIN_TOUCH = raw.touch.min;
 /** Thin strokes (swatch outline, checklist boxes, control borders) use the hatch line width. */

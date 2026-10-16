@@ -1,25 +1,6 @@
-import type { ConfidenceLevel } from './tokens';
+import { checkAnswer, type Issue, type IssueType } from '../../../api/src/schema';
 
-// shortcut: this type is local to the prototype. It moves to api/src/schema.ts in Build.
-// The v1 allowlist from docs/research/issue-types.md (issue-1-issue-types branch). IDs are internal; users see the label.
-export type IssueType =
-  | 'mould-signs'
-  | 'damp-signs'
-  | 'crack-signs'
-  | 'water-entry-signs'
-  | 'blind-cord-loop'
-  | 'window-covering-damage';
-
-/** Normalised to the photo: 0..1 from the top-left corner. */
-export type Region = { x: number; y: number; w: number; h: number };
-
-export type Issue = {
-  issueType: IssueType;
-  confidence: ConfidenceLevel;
-  region: Region;
-  evidence: string;
-  suggestedQuestion: string;
-};
+export type { Issue, IssueType, Region } from '../../../api/src/schema';
 
 // "Shown to the renter as" labels, in checklist order.
 export const V1_TYPES: { issueType: IssueType; name: string }[] = [
@@ -36,7 +17,7 @@ export const issueName = (type: IssueType) => V1_TYPES.find((v) => v.issueType =
 /** Photo shape: width over height. The placeholder is drawn in code at this ratio. */
 export const PHOTO_ASPECT = 4 / 3;
 
-export const issues: Issue[] = [
+const madeUpAnswer = { issues: [
   {
     issueType: 'mould-signs',
     confidence: 'likely',
@@ -65,4 +46,9 @@ export const issues: Issue[] = [
     evidence: 'A curtain hangs torn and only half covers the window.',
     suggestedQuestion: 'Will this blind or curtain be fixed or replaced?',
   },
-];
+] };
+
+// The made-up answer goes through the same check the real AI answer will.
+const checked = checkAnswer(madeUpAnswer);
+if (!checked.ok) throw new Error(`Made-up answer breaks the format: ${checked.reasons.join('; ')}`);
+export const issues: Issue[] = checked.answer.issues;
