@@ -13,6 +13,10 @@ export const ISSUE_TYPES = [
 // Stored as a level, never display text. Matches design/tokens.json.
 export const CONFIDENCE_LEVELS = ['likely', 'possible', 'unsure'] as const;
 
+// Size limits: the AI's answer is untrusted, so cap how much we accept.
+export const MAX_ISSUES = 20;
+export const MAX_TEXT = 300;
+
 export type IssueType = (typeof ISSUE_TYPES)[number];
 export type ConfidenceLevel = (typeof CONFIDENCE_LEVELS)[number];
 /** Normalised to the photo: 0..1 from the top-left corner. */
@@ -26,7 +30,7 @@ export type Issue = {
 };
 export type Answer = { issues: Issue[] };
 
-const text = { type: 'string', minLength: 1 };
+const text = { type: 'string', minLength: 1, maxLength: MAX_TEXT, pattern: '\\S' }; // pattern: not blank
 const unit = { type: 'number', minimum: 0, maximum: 1 };
 /** JSON schema handed to the AI later. Built from the same two lists as the types. */
 export const ANSWER_JSON_SCHEMA = {
@@ -36,6 +40,7 @@ export const ANSWER_JSON_SCHEMA = {
 	properties: {
 		issues: {
 			type: 'array',
+			maxItems: MAX_ISSUES,
 			items: {
 				type: 'object',
 				additionalProperties: false,
@@ -71,6 +76,9 @@ export function checkAnswer(input: unknown): CheckResult {
 	extras(input, ['issues'], 'answer');
 	if (!Array.isArray(input.issues)) return { ok: false, reasons: [...reasons, 'answer.issues must be a list'] };
 
+	if (input.issues.length > MAX_ISSUES) {
+		return { ok: false, reasons: [...reasons, `answer.issues: ${input.issues.length} issues is more than the limit of ${MAX_ISSUES}`] };
+	}
 	input.issues.forEach((item: unknown, i) => {
 		const at = `issues[${i}]`;
 		if (!isObj(item)) return void reasons.push(`${at}: must be an object`);
@@ -83,6 +91,7 @@ export function checkAnswer(input: unknown): CheckResult {
 		}
 		for (const k of ['evidence', 'suggestedQuestion'] as const) {
 			if (typeof item[k] !== 'string' || item[k].trim() === '') reasons.push(`${at}.${k}: must be non-empty text`);
+			else if (item[k].length > MAX_TEXT) reasons.push(`${at}.${k}: text is longer than ${MAX_TEXT} characters`);
 		}
 		const r = item.region;
 		if (!isObj(r)) return void reasons.push(`${at}.region: must be a box {x, y, w, h}`);

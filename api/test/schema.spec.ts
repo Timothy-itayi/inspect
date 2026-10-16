@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { checkAnswer } from '../src/schema';
+import { checkAnswer, ISSUE_TYPES, CONFIDENCE_LEVELS, MAX_ISSUES, MAX_TEXT, ANSWER_JSON_SCHEMA } from '../src/schema';
 
 const issue = {
 	issueType: 'mould-signs',
@@ -15,6 +15,18 @@ const reasonsFor = (v: unknown) => {
 	return r.reasons.join(' | ');
 };
 
+describe('the lists', () => {
+	it('hold exactly the approved values in order', () => {
+		expect([...ISSUE_TYPES]).toEqual(['mould-signs', 'damp-signs', 'crack-signs', 'water-entry-signs', 'blind-cord-loop', 'window-covering-damage']);
+		expect([...CONFIDENCE_LEVELS]).toEqual(['likely', 'possible', 'unsure']);
+	});
+	it('feed the JSON schema', () => {
+		const item = ANSWER_JSON_SCHEMA.properties.issues.items.properties;
+		expect(item.issueType.enum).toEqual([...ISSUE_TYPES]);
+		expect(item.confidence.enum).toEqual([...CONFIDENCE_LEVELS]);
+	});
+});
+
 describe('checkAnswer accepts', () => {
 	it('a correct answer', () => {
 		expect(checkAnswer({ issues: [issue] })).toEqual({ ok: true, answer: { issues: [issue] } });
@@ -28,8 +40,8 @@ describe('checkAnswer accepts', () => {
 });
 
 describe('checkAnswer rejects', () => {
-	it('an unknown issue type', () => expect(reasonsFor(withIssue({ issueType: 'ghosts' }))).toContain('issueType'));
-	it('an unknown confidence level', () => expect(reasonsFor(withIssue({ confidence: 'certain' }))).toContain('confidence'));
+	it('an unknown issue type', () => expect(reasonsFor(withIssue({ issueType: 'ghosts' }))).toMatch(/issueType: "ghosts"/));
+	it('an unknown confidence level', () => expect(reasonsFor(withIssue({ confidence: 'certain' }))).toMatch(/confidence: "certain"/));
 	it('a missing field', () => {
 		const { evidence, ...rest } = issue;
 		expect(reasonsFor({ issues: [rest] })).toContain('evidence');
@@ -51,8 +63,17 @@ describe('checkAnswer rejects', () => {
 		expect(reasonsFor({ issues: [], note: 'hi' })).toContain('unknown field "note"');
 		expect(reasonsFor(withIssue({ region: { x: 0, y: 0, w: 0.1, h: 0.1, z: 1 } }))).toContain('unknown field "z"');
 	});
-	it.each([['text', 'hello'], ['null', null], ['a bare list', [issue]], ['issues not a list', { issues: 'no' }]])(
+	it.each([['text', 'hello', /object/], ['null', null, /object/], ['a bare list', [issue], /object/], ['issues not a list', { issues: 'no' }, /issues must be a list/]])(
 		'something that is not an answer: %s',
-		(_n, v) => expect(checkAnswer(v).ok).toBe(false),
+		(_n, v, why) => expect(reasonsFor(v)).toMatch(why),
 	);
+	it('too many issues, with one reason only', () => {
+		const r = reasonsFor({ issues: Array(MAX_ISSUES + 1).fill({ ...issue, issueType: 'bad' }) });
+		expect(r).toMatch(/more than the limit of 20/);
+		expect(r).not.toMatch(/issueType/);
+	});
+	it('text that is too long', () => {
+		expect(reasonsFor(withIssue({ evidence: 'a'.repeat(MAX_TEXT + 1) }))).toMatch(/evidence: text is longer than 300/);
+		expect(reasonsFor(withIssue({ suggestedQuestion: 'a'.repeat(MAX_TEXT + 1) }))).toMatch(/suggestedQuestion: text is longer/);
+	});
 });
